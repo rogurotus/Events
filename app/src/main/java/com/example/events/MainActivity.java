@@ -1,15 +1,19 @@
 package com.example.events;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+
+    ConstraintLayout constraintLayout;
 
     TextView tx_lb1;
     Button button_lb1;
@@ -23,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        constraintLayout = (ConstraintLayout) findViewById(R.id.cl);
 
         tx_lb1 = (TextView) findViewById(R.id.tx_lb1);
         button_lb1 = (Button) findViewById(R.id.button_lb1);
@@ -40,9 +46,59 @@ public class MainActivity extends AppCompatActivity {
 
         tx1_lb2 = (TextView) findViewById(R.id.tx1_lb2);
         tx2_lb2 = (TextView) findViewById(R.id.tx2_lb2);
+        constraintLayout.setOnTouchListener(new ConstraintLayout.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent m) {
+                handleTouch(m);
+                return true;
+            }
+        });
 
         tx_lb3 = (TextView) findViewById(R.id.tx_lb3);
         hide();
+    }
+
+    void handleTouch(MotionEvent m)
+    {
+        int pointerCount = m.getPointerCount();
+
+        for (int i = 0; i < pointerCount; i++)
+        {
+            int x = (int) m.getX(i);
+            int y = (int) m.getY(i);
+            int id = m.getPointerId(i);
+            int action = m.getActionMasked();
+            int actionIndex = m.getActionIndex();
+            String actionString;
+
+
+            switch (action)
+            {
+                case MotionEvent.ACTION_DOWN:
+                    actionString = "DOWN";
+                    break;
+                case MotionEvent.ACTION_UP:
+                    actionString = "UP";
+                    break;
+                case MotionEvent.ACTION_POINTER_DOWN:
+                    actionString = "PNTR DOWN";
+                    break;
+                case MotionEvent.ACTION_POINTER_UP:
+                    actionString = "PNTR UP";
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    actionString = "MOVE";
+                    break;
+                default:
+                    actionString = "";
+            }
+
+            String touchStatus = "Action: " + actionString + " Index: " +
+                    actionIndex + " ID: " + id + " X: " + x + " Y: " + y;
+            if (id == 0)
+                tx1_lb2.setText(touchStatus);
+            else
+                tx2_lb2.setText(touchStatus);
+        }
     }
 
     @Override
