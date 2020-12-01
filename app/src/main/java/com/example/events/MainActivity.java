@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity
     TextView tx1_lb2;
     TextView tx2_lb2;
 
+    boolean lb2_switch = false;
+
     TextView tx_lb3;
     GestureDetectorCompat gDetector;
 
@@ -54,7 +56,7 @@ public class MainActivity extends AppCompatActivity
         constraintLayout.setOnTouchListener(new ConstraintLayout.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent m) {
                 handleTouch(m);
-                return true;
+                return lb2_switch;
             }
         });
 
@@ -134,6 +136,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.lb2:
                 tx1_lb2.setVisibility(View.VISIBLE);
                 tx2_lb2.setVisibility(View.VISIBLE);
+                lb2_switch = true;
                 return true;
             case R.id.lb3:
                 tx_lb3.setVisibility(View.VISIBLE);
@@ -203,6 +206,7 @@ public class MainActivity extends AppCompatActivity
 
         tx1_lb2.setVisibility(View.GONE);
         tx2_lb2.setVisibility(View.GONE);
+        lb2_switch = false;
 
         tx_lb3.setVisibility(View.GONE);
     }
