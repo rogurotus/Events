@@ -2,8 +2,10 @@ package com.example.events;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.GestureDetectorCompat;
 
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -11,7 +13,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements GestureDetector.OnGestureListener,
+        GestureDetector.OnDoubleTapListener {
 
     ConstraintLayout constraintLayout;
 
@@ -22,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     TextView tx2_lb2;
 
     TextView tx_lb3;
+    GestureDetectorCompat gDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +59,16 @@ public class MainActivity extends AppCompatActivity {
         });
 
         tx_lb3 = (TextView) findViewById(R.id.tx_lb3);
+        this.gDetector = new GestureDetectorCompat(this,this);
+        gDetector.setOnDoubleTapListener(this);
+
         hide();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        this.gDetector.onTouchEvent(event);
+        return super.onTouchEvent(event);
     }
 
     void handleTouch(MotionEvent m)
@@ -126,6 +140,60 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onDown(MotionEvent event) {
+        tx_lb3.setText ("onDown");
+        return true;
+    }
+
+    @Override
+    public boolean onFling(MotionEvent event1, MotionEvent event2,
+                           float velocityX, float velocityY) {
+        tx_lb3.setText("onFling");
+        return true;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent event) {
+        tx_lb3.setText("onLongPress");
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2,
+                            float distanceX, float distanceY) {
+        tx_lb3.setText("onScroll");
+        return true;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent event) {
+        tx_lb3.setText("onShowPress");
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent event) {
+        tx_lb3.setText("onSingleTapUp");
+        return true;
+    }
+
+    @Override
+    public boolean onDoubleTap(MotionEvent event) {
+        tx_lb3.setText("onDoubleTap");
+        return true;
+    }
+
+    @Override
+    public boolean onDoubleTapEvent(MotionEvent event) {
+        tx_lb3.setText("onDoubleTapEvent");
+        return true;
+    }
+
+    @Override
+    public boolean onSingleTapConfirmed(MotionEvent event) {
+        tx_lb3.setText("onSingleTapConfirmed");
+        return true;
     }
 
     private void hide()
